@@ -1,4 +1,5 @@
 import {Module} from '@nestjs/common';
+import {HttpJuegoController} from './http-juego.controller';
 // @Nombre() -> Decorador
 // @Module({
 //     imports: [],
@@ -7,8 +8,10 @@ import {Module} from '@nestjs/common';
 // })
 @Module({
     imports: [],
-    controllers: [],
+    controllers: [
+        HttpJuegoController
+    ],
     providers: [],
 })
-export class HttpModule {
+export class HttpJuegoModule {
 }
