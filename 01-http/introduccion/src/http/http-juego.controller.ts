@@ -77,9 +77,10 @@ export class HttpJuegoController {
                 console.error('Errores: ', errores);
                 throw new BadRequestException('Error validando');
             } else {
-                return {
-                    mensaje: 'Se creo correctamente';
+                const mensajeCorrecto = {
+                    mensaje: 'Se creo correctamente'
                 }
+                return mensajeCorrecto;
             }
         } catch (e) {
             console.error('Error', e);
