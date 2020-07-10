@@ -1,4 +1,16 @@
-import {BadRequestException, Body, Controller, Delete, Get, Header, HttpCode, Param, Post, Query} from '@nestjs/common';
+import {
+    BadRequestException,
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Header,
+    HttpCode,
+    Param,
+    Post,
+    Query,
+    Req, Res
+} from '@nestjs/common';
 import {MascotaCreateDto} from './dto/mascota.create-dto';
 import {validate, ValidationError} from 'class-validator';
 
@@ -61,6 +73,7 @@ export class HttpJuegoController {
     }
 
     @Post('parametros-cuerpo')
+    @HttpCode(200)
     async parametrosCuerpo(
         @Body() parametrosDeCuerpo
     ) {
@@ -72,14 +85,14 @@ export class HttpJuegoController {
         mascotaValida.nombre = parametrosDeCuerpo.nombre;
         mascotaValida.peso = parametrosDeCuerpo.peso;
         try {
-            const errores: ValidationError[] = await validate(mascotaValida)
+            const errores: ValidationError[] = await validate(mascotaValida);
             if (errores.length > 0) {
                 console.error('Errores: ', errores);
                 throw new BadRequestException('Error validando');
             } else {
                 const mensajeCorrecto = {
                     mensaje: 'Se creo correctamente'
-                }
+                };
                 return mensajeCorrecto;
             }
         } catch (e) {
@@ -88,6 +101,26 @@ export class HttpJuegoController {
         }
     }
 
+    @Get('guardarCookieInsegura')
+    guardarCookieInsegura(
+        @Query() parametrosConsulta,
+        @Req() req, //  request - PETICION
+        @Res() res // response - RESPUESTA
+    ) {
+        res.cookie(
+            'galletaInsegura', // nombre
+            'Tengo hambre', // valor
+        );
+        const mensaje = {
+            mensaje: 'ok'
+        };
+        // return mensaje; // NO SE PUEDE USAR RETURN CUANDO SE USA @Res() OJO !!!
+        res.send(mensaje); // METODO EXPRESSJS
+    }
+
+    // 1 Guardar Cookie Insegura
+    // 2 Guardar Cookie Segura
+    // 3 Mostrar Cookies
 
 }
 
