@@ -1,4 +1,6 @@
 import {BadRequestException, Body, Controller, Delete, Get, Header, HttpCode, Param, Post, Query} from '@nestjs/common';
+import {MascotaCreateDto} from './dto/mascota.create-dto';
+import {validate, ValidationError} from 'class-validator';
 
 // http://localhost:3001/juegos-http
 // @Controller('juegos-http')
@@ -59,11 +61,30 @@ export class HttpJuegoController {
     }
 
     @Post('parametros-cuerpo')
-    parametrosCuerpo(
+    async parametrosCuerpo(
         @Body() parametrosDeCuerpo
     ) {
-        console.log('Parametros de cuerpo', parametrosDeCuerpo);
-        return 'Registro creado';
+        // Promesas
+        const mascotaValida = new MascotaCreateDto();
+        mascotaValida.casada = parametrosDeCuerpo.casada;
+        mascotaValida.edad = parametrosDeCuerpo.edad;
+        mascotaValida.ligada = parametrosDeCuerpo.ligada;
+        mascotaValida.nombre = parametrosDeCuerpo.nombre;
+        mascotaValida.peso = parametrosDeCuerpo.peso;
+        try {
+            const errores: ValidationError[] = await validate(mascotaValida)
+            if (errores.length > 0) {
+                console.error('Errores: ', errores);
+                throw new BadRequestException('Error validando');
+            } else {
+                return {
+                    mensaje: 'Se creo correctamente';
+                }
+            }
+        } catch (e) {
+            console.error('Error', e);
+            throw new BadRequestException('Error validando');
+        }
     }
 
 
