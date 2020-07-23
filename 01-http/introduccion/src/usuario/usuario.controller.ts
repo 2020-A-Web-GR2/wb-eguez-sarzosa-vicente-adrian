@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post} from '@nestjs/common';
 
 @Controller('usuario')
 export class UsuarioController {
@@ -34,6 +34,18 @@ export class UsuarioController {
         this.arregloUsuarios.push(nuevoUsuario);
         this.idActual = this.idActual + 1;
         return nuevoUsuario;
+    }
+
+    @Get(':id')
+    verUno(
+        @Param() parametrosRuta
+    ){
+        const indice = this.arregloUsuarios.findIndex(
+            // (usuario) => usuario.id === Number(parametrosRuta.id)
+            (usuario) => usuario.id === Number(parametrosRuta.id)
+        )
+        return this.arregloUsuarios[indice];
+
     }
 
     // XML <usuario><nombre>ADRIAN</nombre></usuario>
