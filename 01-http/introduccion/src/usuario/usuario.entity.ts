@@ -20,7 +20,8 @@ export class UsuarioEntity{
     @Column({
         name: 'apellido',
         type: 'varchar',
-        nullable: true
+        nullable: true,
+        length: '60'
     })
     apellido?: string
 
@@ -28,7 +29,8 @@ export class UsuarioEntity{
         name: 'cedula',
         type: 'varchar',
         nullable: false,
-        unique: true
+        unique: true,
+        length: '18'
     })
     cedula: string
 
