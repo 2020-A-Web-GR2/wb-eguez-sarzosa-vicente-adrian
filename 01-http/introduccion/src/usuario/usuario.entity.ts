@@ -1,8 +1,18 @@
 // usuario.entity.ts
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, Entity, Index, PrimaryGeneratedColumn} from 'typeorm';
 
+@Index([
+    'nombre',
+    'apellido',
+    'cedula',
+    'fechaNacimiento' // Nombres de las propiedades en la clase
+])
+@Index(
+    ['nombre', 'apellido', 'cedula'],
+    {unique: true}
+)
 @Entity('epn_usuario') // nombre tabla usuario
-export class UsuarioEntity{
+export class UsuarioEntity {
     @PrimaryGeneratedColumn({
         unsigned: true,
         comment: 'Identificador',
@@ -32,7 +42,29 @@ export class UsuarioEntity{
         unique: true,
         length: '18'
     })
-    cedula: string
+    cedula: string;
 
+    @Column({
+        name: 'sueldo',
+        nullable: true,
+        type: 'decimal',
+        precision: 10, // 1000000000.
+        scale: 4, // .0001
+    })
+    sueldo?: number;
+
+    @Column({
+        nullable: true,
+        type: 'date',
+        name: 'fecha_nacimiento'
+    })
+    fechaNacimiento?: string;
+
+    @Column({
+        nullable: true,
+        type: 'datetime',
+        name: 'fecha_hora_nacimiento'
+    })
+    fechaHoraNacimiento?: string;
 
 }
