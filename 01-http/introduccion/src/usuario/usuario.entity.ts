@@ -7,10 +7,10 @@ import {Column, Entity, Index, PrimaryGeneratedColumn} from 'typeorm';
     'cedula',
     'fechaNacimiento' // Nombres de las propiedades en la clase
 ])
-@Index(
-    ['nombre', 'apellido', 'cedula'],
-    {unique: true}
-)
+// @Index(
+//     ['nombre', 'apellido', 'cedula'],
+//     {unique: true}
+// )
 @Entity('epn_usuario') // nombre tabla usuario
 export class UsuarioEntity {
     @PrimaryGeneratedColumn({
