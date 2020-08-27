@@ -204,10 +204,34 @@ export class UsuarioController {
     ) {
         const nombreControlador = 'Adrian';
         res.render(
-            'ejemplo', // Nombre de la vista (archivo)
+            'usuario/ejemplo', // Nombre de la vista (archivo)
             { // Parametros de la vista
                 nombre: nombreControlador,
             })
+    }
+
+    @Get('vista/faq')
+    faq(
+        @Res() res
+    ) {
+
+        res.render('usuario/faq')
+    }
+
+    @Get('vista/inicio')
+    inicio(
+        @Res() res
+    ) {
+
+        res.render('usuario/inicio')
+    }
+
+    @Get('vista/login')
+    login(
+        @Res() res
+    ) {
+
+        res.render('usuario/login')
     }
 
 
