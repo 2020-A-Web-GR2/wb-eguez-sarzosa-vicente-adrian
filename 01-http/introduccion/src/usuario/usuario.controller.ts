@@ -221,7 +221,8 @@ export class UsuarioController {
 
     @Get('vista/inicio')
     async inicio(
-        @Res() res
+        @Res() res,
+        @Query() parametrosConsulta
     ) {
         let resultadoEncontrado
         try {
@@ -233,7 +234,8 @@ export class UsuarioController {
             res.render(
                 'usuario/inicio',
                 {
-                    arregloUsuarios: resultadoEncontrado
+                    arregloUsuarios: resultadoEncontrado,
+                    parametrosConsulta: parametrosConsulta
                 });
         } else {
             throw new NotFoundException('No se encontraron usuarios')
@@ -262,6 +264,34 @@ export class UsuarioController {
                 cedula: parametrosConsulta.cedula
             }
         )
+    }
+
+    @Get('vista/editar/:id') // Controlador
+    async editarUsuarioVista(
+        @Query() parametrosConsulta,
+        @Param() parametrosRuta,
+        @Res() res
+    ) {
+        const id = Number(parametrosRuta.id)
+        let usuarioEncontrado;
+        try {
+            usuarioEncontrado = await this._usuarioService.buscarUno(id);
+        } catch (error) {
+            console.error('Error del servidor');
+            return res.redirect('/usuario/vista/inicio?mensaje=Error buscando usuario');
+        }
+        if (usuarioEncontrado) {
+            return res.render(
+                'usuario/crear',
+                {
+                    error: parametrosConsulta.error,
+                    usuario: usuarioEncontrado
+                }
+            )
+        } else {
+            return res.redirect('/usuario/vista/inicio?mensaje=Usuario no encontrado');
+        }
+
     }
 
     @Post('crearDesdeVista')
@@ -300,6 +330,7 @@ export class UsuarioController {
         }
     }
 
+
     @Post('eliminarDesdeVista/:id')
     async eliminarDesdeVista(
         @Param() parametrosRuta,
@@ -307,11 +338,11 @@ export class UsuarioController {
     ) {
         try {
             const id = Number(parametrosRuta.id);
-            await this._usuarioService.eliminarUno(id)
-            return res.redirect('/usuario/vista/inicio?mensaje=Usuario eliminado')
+            await this._usuarioService.eliminarUno(id);
+            return res.redirect('/usuario/vista/inicio?mensaje=Usuario eliminado');
         } catch (error) {
             console.log(error);
-            return res.redirect('/usuario/vista/inicio?error=Error eliminando usuario')
+            return res.redirect('/usuario/vista/inicio?error=Error eliminando usuario');
         }
     }
 
