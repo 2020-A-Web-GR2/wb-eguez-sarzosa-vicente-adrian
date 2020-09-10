@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import {UsuarioService} from './usuario.service';
 import {MascotaService} from '../mascota/mascota.service';
+import {UsuarioEntity} from './usuario.entity';
 
 @Controller('usuario')
 export class UsuarioController {
@@ -328,6 +329,28 @@ export class UsuarioController {
             const mensajeError = 'Error creando usuario'
             return res.redirect('/usuario/vista/crear?error=' + mensajeError + nombreApellidoConsulta + cedulaConsulta);
         }
+    }
+
+    @Post('editarDesdeVista/:id')
+    async editarDesdeVista(
+        @Param() parametrosRuta,
+        @Body() parametrosCuerpo,
+        @Res() res,
+    ) {
+        const usuarioEditado = {
+            id: Number(parametrosRuta.id),
+            nombre: parametrosCuerpo.nombre,
+            apellido: parametrosCuerpo.apellido,
+            // cedula: parametrosCuerpo.cedula,
+        } as UsuarioEntity;
+        try {
+            await this._usuarioService.editarUno(usuarioEditado);
+            return res.redirect('/usuario/vista/inicio?mensaje=Usuario editado');
+        }catch (error) {
+            console.error(error);
+            return res.redirect('/usuario/vista/inicio?mensaje=Error editando usuario');
+        }
+
     }
 
 
