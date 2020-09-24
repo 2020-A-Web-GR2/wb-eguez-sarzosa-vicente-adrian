@@ -6,5 +6,9 @@
     "httpOnly": true,
     "path": "/"
   },
-  "__lastAccess": 1599857899642
+  "__lastAccess": 1600979189328,
+  "usuario": "vicente",
+  "roles": [
+    "Supervisor"
+  ]
 }
